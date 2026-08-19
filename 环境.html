@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1421">
+  <title>东韵棋牌｜东方文化主题棋牌休闲空间</title>
+  <style>
+    :root { --ink:#0b1421; --ink-2:#101e2e; --gold:#d6ad58; --gold-soft:#f2d99d; --paper:#f8f1df; --muted:#9ca6b1; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--paper); background:var(--ink); font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+    body::before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.12; background-image:radial-gradient(circle at 1px 1px,#fff 1px,transparent 0); background-size:5px 5px; mix-blend-mode:soft-light; z-index:4; }
+    a { color:inherit; text-decoration:none; }
+    .wrap { width:min(100%,760px); margin:auto; overflow:hidden; }
+    .hero { position:relative; min-height:620px; padding:24px 22px 40px; display:flex; flex-direction:column; isolation:isolate; background:linear-gradient(145deg,#17283d 0%,#0b1421 57%,#080d14 100%); }
+    .hero::after { content:""; position:absolute; width:510px; height:510px; border:1px solid rgba(214,173,88,.3); border-radius:50%; top:76px; left:50%; transform:translateX(-50%); box-shadow:0 0 0 18px rgba(214,173,88,.04),0 0 0 37px rgba(214,173,88,.025); z-index:-1; }
+    .topline { display:flex; justify-content:space-between; align-items:center; color:var(--gold-soft); font-size:11px; letter-spacing:.16em; }
+    .mark { width:42px; height:42px; display:grid; place-items:center; border:1px solid var(--gold); transform:rotate(45deg); }
+    .mark span { transform:rotate(-45deg); font-family:serif; font-size:19px; color:var(--gold-soft); }
+    .hero-main { text-align:center; margin:auto 0 8px; }
+    .seal { display:inline-grid; place-items:center; width:58px; height:58px; border-radius:50%; color:#182331; background:var(--gold); box-shadow:0 0 30px rgba(214,173,88,.25); font-family:serif; font-size:28px; }
+    h1 { margin:19px 0 9px; font:600 49px/1.04 "STKaiti","KaiTi","Microsoft YaHei",serif; letter-spacing:.12em; text-indent:.12em; color:var(--paper); }
+    .subtitle { margin:0; color:var(--gold-soft); font-size:13px; letter-spacing:.23em; text-indent:.23em; }
+    .hero-copy { max-width:300px; margin:28px auto 0; color:#c7cdd3; font-size:14px; line-height:1.9; }
+    .scroll-cue { text-align:center; color:var(--gold); font-size:11px; letter-spacing:.14em; }
+    .scroll-cue::after { content:""; display:block; width:1px; height:31px; margin:9px auto 0; background:linear-gradient(var(--gold),transparent); }
+    .pattern { position:relative; padding:46px 18px 28px; background:var(--paper); color:#172030; }
+    .pattern::before { content:""; position:absolute; inset:0; opacity:.55; background:linear-gradient(135deg,transparent 48%,#d6ad581c 49%,#d6ad581c 51%,transparent 52%) 0 0/18px 18px; pointer-events:none; }
+    .section-title { position:relative; z-index:1; display:flex; gap:13px; align-items:center; margin:0 0 22px; font:600 25px "STKaiti","KaiTi",serif; letter-spacing:.1em; }
+    .section-title::before { content:""; width:23px; height:1px; background:var(--gold); }
+    .perks { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .perk { min-height:157px; padding:18px 15px; border:1px solid rgba(173,129,47,.3); background:rgba(255,255,255,.7); display:flex; flex-direction:column; }
+    .perk-icon { color:#b18238; font:30px/1 serif; }
+    .perk h3 { margin:17px 0 8px; font-size:15px; letter-spacing:.04em; }
+    .perk p { margin:0; color:#69717a; font-size:12px; line-height:1.65; }
+    .gallery { padding:47px 12px 50px; background:#0e1927; }
+    .gallery .section-title { margin-left:6px; color:var(--paper); }
+    .gallery-note { margin:-14px 6px 20px; color:var(--muted); font-size:12px; }
+    .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:5px; }
+    .photo { appearance:none; border:0; padding:0; display:block; position:relative; overflow:hidden; background:#152334; aspect-ratio:1/1; cursor:zoom-in; }
+    .photo:nth-child(3n+1) { aspect-ratio:4/5; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .45s ease,filter .3s; }
+    .photo:focus-visible { outline:2px solid var(--gold-soft); outline-offset:2px; }
+    .photo:hover img { transform:scale(1.055); filter:brightness(1.07); }
+    .visit { padding:52px 22px 60px; background:linear-gradient(155deg,#17283d,#0b1421); }
+    .visit .section-title { color:var(--paper); }
+    .address-card { border:1px solid rgba(214,173,88,.58); padding:28px 22px; position:relative; background:linear-gradient(115deg,rgba(255,255,255,.045),transparent); }
+    .address-card::before { content:"东"; position:absolute; right:15px; top:5px; color:rgba(214,173,88,.08); font:80px serif; }
+    .address-label { color:var(--gold); font-size:11px; letter-spacing:.18em; }
+    .address { position:relative; margin:13px 0 20px; font-size:17px; line-height:1.65; font-weight:500; }
+    .nav-tip { margin:0; padding-top:17px; border-top:1px solid rgba(214,173,88,.27); color:#c1c8d0; font-size:13px; }
+    .nav-tip strong { color:var(--gold-soft); font-weight:500; }
+    footer { padding:35px 20px calc(35px + env(safe-area-inset-bottom)); text-align:center; background:#070d14; }
+    .open { color:var(--gold); font-size:13px; letter-spacing:.22em; text-indent:.22em; }
+    footer p { margin:13px 0 0; color:#87919b; font-size:12px; }
+    .modal { position:fixed; z-index:10; inset:0; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(2,7,13,.94); }
+    .modal.open { display:flex; }
+    .modal img { display:block; max-width:100%; max-height:83vh; object-fit:contain; box-shadow:0 16px 50px #000; }
+    .close { position:absolute; top:16px; right:17px; width:39px; height:39px; border:1px solid rgba(242,217,157,.7); border-radius:50%; background:transparent; color:var(--gold-soft); font-size:27px; line-height:32px; cursor:pointer; }
+    .modal p { position:absolute; bottom:19px; margin:0; color:#bcc4cc; font-size:12px; }
+    @media (min-width:560px) { .hero { min-height:680px; padding-left:38px; padding-right:38px; } h1 { font-size:58px; } .pattern,.visit { padding-left:36px; padding-right:36px; } .gallery { padding-left:24px; padding-right:24px; } .grid { grid-template-columns:repeat(3,1fr); } }
+    @media (prefers-reduced-motion:reduce) { *,html { scroll-behavior:auto; transition:none!important; } }
+  </style>
+</head>
+<div style="position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(16,19,26,.9);padding:10px 16px;text-align:center;border-bottom:1px solid rgba(212,175,55,.3)"><a href="./index.html" style="color:#d4af37;text-decoration:none;font-size:14px;font-weight:600">← 返回东韵管家</a></div><body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="topline"><span>东方文化主题棋牌休闲空间</span><div class="mark"><span>东</span></div><span>24H OPEN</span></div>
+      <div class="hero-main"><div class="seal">韵</div><h1>东韵棋牌</h1><p class="subtitle">DONG YUN MAHJONG</p><p class="hero-copy">一方雅境，几位知己。让每一局相聚，都有从容自在的好时光。</p></div>
+      <div class="scroll-cue">向下阅览</div>
+    </section>
+    <section class="pattern" id="features"><h2 class="section-title">自在相聚</h2><div class="perks">
+      <article class="perk"><span class="perk-icon">◷</span><h3>24小时营业</h3><p>昼夜皆可相约，随时恭候您的好时光。</p></article>
+      <article class="perk"><span class="perk-icon">P</span><h3>免费地下停车</h3><p>超大地下停车场，驾车前来轻松无忧。</p></article>
+      <article class="perk"><span class="perk-icon">￥</span><h3>5小时一场</h3><p>温馨88元<br>雅致98元 · 尊享118元</p></article>
+      <article class="perk"><span class="perk-icon">茶</span><h3>小吃茶水免费</h3><p>暖茶与小食相伴，让牌局更添惬意。</p></article>
+    </div></section>
+    <section class="gallery" id="gallery"><h2 class="section-title">东韵一隅</h2><p class="gallery-note">点击照片，细看空间里的每一处雅致。</p><div class="grid" id="photoGrid"></div></section>
+    <section class="visit"><h2 class="section-title">到店相聚</h2><div class="address-card"><div class="address-label">门店地址</div><p class="address">无锡市锡东新城<br>九里东韵生活广场3楼301</p><p class="nav-tip">导航搜索 <strong>“东韵棋牌”</strong> 即可直达</p></div></section>
+    <footer><div class="open">24小时营业</div><p>东韵棋牌，恭候每一次自在相聚。</p></footer>
+  </main>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="环境图片预览"><button class="close" type="button" aria-label="关闭预览">×</button><img id="modalImage" alt="东韵棋牌环境图"><p id="caption"></p></div>
+  <script>
+    const grid=document.getElementById('photoGrid'), modal=document.getElementById('modal'), modalImage=document.getElementById('modalImage'), caption=document.getElementById('caption');
+    const featured=[7,14,21,26,29,31,34,35];
+    featured.forEach(i=>{const n=String(i).padStart(2,'0'), name=`环境${n}.jpg`, b=document.createElement('button'), img=document.createElement('img'); b.className='photo'; b.type='button'; b.setAttribute('aria-label',`查看东韵棋牌环境 ${i}`); img.loading='lazy'; img.src=`images/selected/${name}`; img.alt=`东韵棋牌环境 ${i}`; b.append(img); b.addEventListener('click',()=>{modalImage.src=img.src;modalImage.alt=img.alt;caption.textContent=`东韵棋牌 · 环境 ${n}`;modal.classList.add('open');document.body.style.overflow='hidden';});grid.append(b);}
+    function close(){modal.classList.remove('open');modalImage.removeAttribute('src');document.body.style.overflow='';}
+    modal.querySelector('.close').addEventListener('click',close);modal.addEventListener('click',e=>{if(e.target===modal)close();});document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+  </script>
+</body>
+</html>

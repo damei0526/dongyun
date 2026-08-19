@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>东韵棋牌 · 到店管家</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body {
+    font-family: "PingFang SC","Microsoft YaHei",sans-serif;
+    background: #10131a;
+    background-image: radial-gradient(ellipse at 50% -10%, #1c2333 0%, #10131a 60%);
+    min-height: 100vh;
+    color: #e8dcc0;
+    display: flex;
+    justify-content: center;
+  }
+  .page { width:100%; max-width: 480px; padding: 28px 20px 40px; }
+
+  .brand { text-align:center; padding: 30px 0 24px; border-bottom: 1px solid rgba(212,175,55,.25); margin-bottom: 24px; }
+  .brand .logo { font-size: 34px; font-weight: 700; letter-spacing: 6px; color: #d4af37; text-shadow: 0 0 24px rgba(212,175,55,.35); }
+  .brand .sub { margin-top: 10px; font-size: 13px; letter-spacing: 3px; color: #9a8f74; }
+  .brand .line { width: 46px; height: 2px; background: #d4af37; margin: 16px auto 0; border-radius: 2px; }
+
+  .welcome { text-align:center; font-size: 15px; line-height: 1.9; color: #cfc4a6; margin-bottom: 22px; }
+  .welcome b { color: #d4af37; font-weight: 600; }
+
+  .btn-primary {
+    display:block; text-align:center;
+    background: linear-gradient(135deg, #d4af37, #b8912a);
+    color: #141414; font-size: 18px; font-weight: 700; letter-spacing: 2px;
+    padding: 16px 0; border: none; width: 100%; border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(212,175,55,.25);
+    margin-bottom: 20px;
+  }
+  .btn-primary:active { transform: scale(.98); }
+
+  /* 勾选清单 */
+  .checklist { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; padding: 8px 16px 14px; margin-bottom: 20px; }
+  .checklist .h { text-align:center; font-size: 13px; color: #d4af37; letter-spacing: 3px; padding: 12px 0 6px; }
+  /* 勾选清单：分组卡片 */
+  .grp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .grp {
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 10px;
+    padding: 6px 10px 8px;
+  }
+  .grp-title {
+    text-align: center;
+    color: #d4af37;
+    font-size: 12px;
+    letter-spacing: 2px;
+    padding: 6px 0 5px;
+    border-bottom: 1px dashed rgba(212,175,55,.3);
+    margin-bottom: 4px;
+  }
+  .grp .opt {
+    display:flex; align-items:center;
+    padding: 8px 2px; border-bottom: 1px dashed rgba(255,255,255,.05);
+    font-size: 13px; color: #e8dcc0; -webkit-user-select:none; user-select:none;
+  }
+  .grp .opt:last-child { border-bottom:none; }
+  .note { font-size: 11px; color: #9a8f74; }
+  .qty { display:none; align-items:center; gap:6px; margin: 0 8px; }
+  .qbtn {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 1px solid #d4af37; background: transparent;
+    color: #d4af37; font-size: 15px; line-height: 1;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .qbtn:active { background: rgba(212,175,55,.25); }
+  .qnum { min-width: 18px; text-align:center; color: #d4af37; font-size: 13px; font-weight: 700; }
+  .opt {
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 11px 2px; border-bottom: 1px dashed rgba(255,255,255,.06);
+    font-size: 14px; color: #e8dcc0; -webkit-user-select:none; user-select:none;
+  }
+  .opt:last-child { border-bottom:none; }
+  .opt .price { color: #d4af37; font-size: 13px; }
+  .box {
+    width: 22px; height: 22px; border: 2px solid #d4af37; border-radius: 5px;
+    display:inline-flex; align-items:center; justify-content:center;
+    margin-right: 12px; font-size: 14px; color: #10131a; font-weight: 700;
+    flex-shrink:0;
+  }
+  .opt.on .box { background:#d4af37; }
+  .opt.on .box::after { content:"✓"; }
+  .opt .name { flex:1; }
+
+  .tip { text-align:center; font-size: 11px; color: #6f6752; margin: -12px 0 18px; line-height: 1.7; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .card {
+    background: rgba(255,255,255,.04); border: 1px solid rgba(212,175,55,.18);
+    border-radius: 12px; padding: 18px 10px; text-align:center;
+    text-decoration:none; color: #e8dcc0; display:block;
+  }
+  .card:active { background: rgba(212,175,55,.1); }
+  .card .ico { font-size: 26px; display:block; margin-bottom: 8px; }
+  .card .t1 { font-size: 14px; font-weight: 600; }
+  .card .t2 { font-size: 11px; color: #9a8f74; margin-top: 4px; }
+
+  .services { background: rgba(255,255,255,.03); border-radius: 12px; padding: 16px; border: 1px solid rgba(255,255,255,.06); margin-bottom: 24px; }
+  .services .h { font-size: 13px; color: #d4af37; letter-spacing: 2px; margin-bottom: 10px; text-align:center; }
+  .services .row { display:flex; justify-content:space-between; font-size: 13px; color: #cfc4a6; padding: 7px 4px; border-bottom: 1px dashed rgba(255,255,255,.06); }
+  .services .row:last-child { border-bottom:none; }
+  .services .row span:last-child { color: #d4af37; }
+
+  .wxnum { text-align:center; font-size: 16px; color: #d4af37; font-weight: 700; letter-spacing: 1px; padding: 6px 0 8px; }
+  .qr { text-align:center; margin: 12px 0; }
+  .qr img { width: 190px; height: 190px; object-fit: cover; border-radius: 12px; border: 3px solid #fff; background: #fff; }
+  .wxtip2 { text-align:center; font-size: 12px; color: #9a8f74; line-height: 1.8; }
+
+  .foot { text-align:center; font-size: 11px; color: #6f6752; letter-spacing: 1px; line-height: 1.8; }
+
+  /* 导航弹层 */
+  .navpanel {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    background: #181d28; border-top: 1px solid rgba(212,175,55,.3);
+    border-radius: 16px 16px 0 0; padding: 18px 20px 28px;
+    z-index: 100; box-shadow: 0 -8px 30px rgba(0,0,0,.5);
+    max-width: 480px; margin: 0 auto;
+  }
+  .nav-title { text-align:center; color:#d4af37; font-size:14px; letter-spacing:2px; margin-bottom:14px; }
+  .nav-btn {
+    display:block; text-align:center; padding: 13px 0; margin-bottom: 10px;
+    border-radius: 10px; font-size: 15px; font-weight:600; text-decoration:none;
+    background: rgba(212,175,55,.1); border:1px solid rgba(212,175,55,.3); color:#e8dcc0;
+  }
+  .nav-btn:active { background: rgba(212,175,55,.2); }
+  .nav-close { text-align:center; color:#9a8f74; font-size:13px; padding: 8px 0 2px; cursor:pointer; }
+  .nav-mask {
+    position: fixed; left:0; top:0; right:0; bottom:0;
+    background: rgba(0,0,0,.5); z-index: 99;
+  }
+
+  /* 往下滑引导箭头 */
+  .scroll-hint {
+    position: fixed;
+    left: 50%; bottom: 22px;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center;
+    color: #d4af37; z-index: 99; cursor: pointer;
+    transition: opacity .4s;
+    animation: bob 1.6s ease-in-out infinite;
+    text-decoration: none;
+  }
+  .scroll-hint .arrow { font-size: 32px; line-height: 1; text-shadow: 0 0 16px rgba(212,175,55,.5); }
+  .scroll-hint .txt { font-size: 11px; letter-spacing: 3px; margin-top: 4px; color: #9a8f74; }
+  @keyframes bob {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(9px); }
+  }
+
+  /* 留言区 */
+  .liuyan-tip { text-align:center; font-size: 12px; color: #9a8f74; margin-bottom: 10px; }
+  #msgInput {
+    width: 100%;
+    min-height: 80px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(212,175,55,.3);
+    border-radius: 10px;
+    color: #e8dcc0;
+    font-size: 14px;
+    padding: 10px;
+    resize: vertical;
+    font-family: inherit;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+  #msgInput::placeholder { color: #6f6752; }
+  .btn-liuyan {
+    display:block; width: 100%;
+    background: linear-gradient(135deg, #d4af37, #b8912a);
+    color: #141414; font-size: 15px; font-weight: 700; letter-spacing: 2px;
+    padding: 12px 0; border: none; border-radius: 10px;
+  }
+  .btn-liuyan:active { transform: scale(.98); }
+  .member-recharge {
+    margin: 18px 0 8px;
+    padding: 18px 14px;
+    border: 1px solid #d4af37;
+    border-radius: 10px;
+    color: #d4af37;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: rgba(212,175,55,.06);
+  }
+</style>
+</head>
+<body>
+<script>
+var OPTIONS = {
+  "果盘（时令切果）": {"果盘 28元档":"28", "果盘 38元档":"38"},
+  "套餐": {"套餐一（三菜一汤）":"198", "套餐二（四菜一汤）":"298"},
+  "简餐": {"水饺":"", "炒饭":"", "面条":""},
+  "小吃": {"炸鸡翅":"", "炸鸡腿":"", "炸鸡柳":""},
+  "饮品": {"咖啡（星巴克同款）":"", "奶茶（霸王茶姬同款）":""}
+};
+
+function toggle(opt) {
+  opt.classList.toggle("on");
+  var qty = opt.querySelector(".qty");
+  if (qty) {
+    if (opt.classList.contains("on")) { qty.style.display = "inline-flex"; }
+    else { qty.style.display = "none"; qty.querySelector(".qnum").textContent = "1"; }
+  }
+  updateCount();
+}
+
+function changeQty(btn, delta) {
+  var num = btn.parentNode.querySelector(".qnum");
+  var v = parseInt(num.textContent, 10) + delta;
+  if (v < 1) v = 1;
+  num.textContent = v;
+}
+
+function updateCount() {
+  var n = document.querySelectorAll(".opt.on").length;
+  var btn = document.getElementById("orderBtn");
+  btn.textContent = n > 0 ? "选好了（已选 " + n + " 项）" : "选好了";
+}
+
+function genOrder() {
+  var sel = [];
+  document.querySelectorAll(".opt.on").forEach(function(o){
+    var name = o.getAttribute("data-name");
+    var price = o.getAttribute("data-price");
+    var qEl = o.querySelector(".qnum");
+    var q = qEl ? parseInt(qEl.textContent, 10) : 1;
+    var item = q > 1 ? name + "×" + q : name;
+    sel.push(price ? item + "（" + price + "元）" : item);
+  });
+  if (sel.length === 0) {
+    alert("请先勾选想提前准备的东西（在下方方框打√）");
+    return;
+  }
+  var tel = "17766389020";
+  var msg = "东韵预约：到店想提前准备：" + sel.join("、");
+  function done() {
+    alert("预约清单已生成并复制：\n\n" + msg + "\n\n请粘贴发送给微信 " + tel + "，或点下方【联系电话】直接预约");
+  }
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(msg).then(done, done);
+  } else {
+    var ta = document.createElement("textarea");
+    ta.value = msg;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); } catch(e) { alert("请手动复制：\n" + msg); }
+    document.body.removeChild(ta);
+  }
+}
+
+function copyTel() {
+  var tel = "17766389020";
+  var t2 = document.querySelector('a[onclick*="copyTel"] .t2');
+  var orig = t2 ? t2.textContent : "";
+  function done() {
+    if (t2) { t2.textContent = "已复制 ✓ 去微信粘贴添加"; }
+    setTimeout(function(){ if(t2) { t2.textContent = orig; } }, 2500);
+    alert("号码已复制：17766389020\n\n去微信搜索框粘贴，即可添加好友预约/咨询");
+  }
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(tel).then(done, done);
+  } else {
+    var ta = document.createElement("textarea");
+    ta.value = tel;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); } catch(e) { alert("复制失败，请手动记下：" + tel); }
+    document.body.removeChild(ta);
+  }
+}
+
+function sendMsg() {
+  var v = document.getElementById("msgInput").value.trim();
+  if (!v) { alert("请先写下您的建议"); return; }
+  var msg = "东韵留言：" + v;
+  function done() {
+    document.getElementById("msgInput").value = "";
+    alert("留言已复制，请粘贴发送给微信 17766389020，感谢您的建议！");
+  }
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(msg).then(done, done);
+  } else {
+    var ta = document.createElement("textarea");
+    ta.value = msg;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); } catch(e) { alert("请手动复制发送：" + msg); }
+    document.body.removeChild(ta);
+  }
+}
+
+function scrollDown() {
+  var btn = document.getElementById("orderBtn");
+  if (btn) { btn.scrollIntoView({ behavior: "smooth" }); }
+}
+
+function showNav() {
+  document.getElementById("navMask").style.display = "block";
+  document.getElementById("navPanel").style.display = "block";
+}
+function hideNav() {
+  document.getElementById("navMask").style.display = "none";
+  document.getElementById("navPanel").style.display = "none";
+}
+window.addEventListener("scroll", function(){
+  var h = document.getElementById("scrollHint");
+  if (!h) return;
+  var show = window.scrollY < 60;
+  h.style.opacity = show ? 1 : 0;
+  h.style.pointerEvents = show ? "auto" : "none";
+});
+</script>
+<div class="page">
+
+  <div class="brand">
+    <div class="logo">东韵棋牌</div>
+    <div class="sub">新中式商务棋牌 · 棋牌休闲空间</div>
+    <div class="line"></div>
+  </div>
+
+  <div class="welcome">
+    欢迎光临！<br>
+    勾选想提前准备的，<b>到店就能用</b> ⬇️
+  </div>
+
+  <!-- 预约按钮 -->
+  <button class="btn-primary" id="orderBtn" onclick="genOrder()">预约准备</button>
+
+  <!-- 勾选清单 -->
+  <div class="checklist">
+    <div class="grp-grid" id="grpGrid"></div>
+  </div>
+  <div class="tip">勾选后在方框打 √，点上方「预约准备」生成清单发给我们</div>
+
+  <script>
+  (function(){
+    var html = "";
+    Object.keys(OPTIONS).forEach(function(group){
+      html += '<div class="grp"><div class="grp-title">' + group + '</div>';
+      Object.keys(OPTIONS[group]).forEach(function(name){
+        var price = OPTIONS[group][name];
+        var note = (group === "套餐") ? ' <span class="note">（含房费）</span>' : '';
+        var needQty = (group !== "果盘（时令切果）" && group !== "套餐");
+        html += '<div class="opt" data-name="' + name + '" data-price="' + price + '" onclick="toggle(this)">' +
+                '<span class="box"></span><span class="name">' + name + '</span>' + note +
+                (needQty ? '<span class="qty"><button class="qbtn" onclick="event.stopPropagation(); changeQty(this,-1)">−</button><span class="qnum">1</span><button class="qbtn" onclick="event.stopPropagation(); changeQty(this,1)">＋</button></span>' : '') +
+                (price ? '<span class="price">' + price + '元</span>' : '') +
+                '</div>';
+      });
+      html += '</div>';
+    });
+    document.getElementById("grpGrid").innerHTML = html;
+  })();
+  </script>
+
+  <!-- 功能卡片 -->
+  <div class="grid">
+    <a class="card" href="#" onclick="copyTel(); return false;">
+      <span class="ico">📞</span>
+      <span class="t1">联系电话</span>
+      <span class="t2">17766389020（微信同号）· 点一下复制</span>
+    </a>
+    <a class="card" href="#" onclick="showNav(); return false;">
+      <span class="ico">🚗</span>
+      <span class="t1">一键导航</span>
+      <span class="t2">高德 · 百度 · 腾讯</span>
+    </a>
+    <a class="card" href="./环境.html">
+      <span class="ico">🖼️</span>
+      <span class="t1">看环境</span>
+      <span class="t2">35张实景照片</span>
+    </a>
+  </div>
+
+  <!-- 微信区 -->
+  <div class="services" id="wechat">
+    <div class="h">─ 加 入 我 们 ─</div>
+    <div class="wxnum">联系电话 17766389020（微信同号）</div>
+    <div class="qr">
+      <img src="./群二维码.jpg" alt="东韵棋牌室群二维码">
+    </div>
+    <div class="wxtip2">长按识别二维码，加入东韵棋牌室群<br>（群二维码 7 天有效，过期重新进页面获取）</div>
+  </div>
+
+  <!-- 留言区 -->
+  <div class="services" id="liuyan">
+    <div class="h">─ 留 言 ─</div>
+    <div class="liuyan-tip">服务不周，请提建议</div>
+    <textarea id="msgInput" placeholder="写下您的建议或意见…"></textarea>
+    <button class="btn-liuyan" onclick="sendMsg()">发送留言</button>
+  </div>
+
+  <div class="member-recharge">会员充值 即将上线，敬请期待</div>
+
+  <div class="foot">
+    无锡市锡东新城 九里东韵生活广场3楼301<br>
+    导航搜「东韵棋牌」直达 · 24小时营业
+  </div>
+
+  <!-- 导航弹层 -->
+  <div class="nav-mask" id="navMask" style="display:none" onclick="hideNav()"></div>
+  <div class="navpanel" id="navPanel" style="display:none">
+    <div class="nav-title">选择地图开始导航</div>
+    <a class="nav-btn" href="https://uri.amap.com/navigation?to=120.46477675437926,31.580644490855413,%E4%B8%9C%E9%9F%B5%E6%A3%8B%E7%89%8C&mode=car&policy=1">🚗 高德导航</a>
+    <a class="nav-btn" href="https://api.map.baidu.com/direction?destination=latlng:31.580644490855413,120.46477675437926|name:%E4%B8%9C%E9%9F%B5%E6%A3%8B%E7%89%8C&coord_type=gcj02&mode=driving&output=html">🗺️ 百度导航</a>
+    <a class="nav-btn" href="https://apis.map.qq.com/uri/v1/routeplan?type=drive&to=%E4%B8%9C%E9%9F%B5%E6%A3%8B%E7%89%8C&tocoord=31.580644490855413,120.46477675437926">🧭 腾讯导航</a>
+    <div class="nav-close" onclick="hideNav()">取消</div>
+  </div>
+
+  <!-- 往下滑引导 -->
+  <a class="scroll-hint" id="scrollHint" onclick="scrollDown(); return false;">
+    <span class="arrow">↓</span>
+    <span class="txt">往下滑</span>
+  </a>
+
+</div>
+</body>
+</html>
